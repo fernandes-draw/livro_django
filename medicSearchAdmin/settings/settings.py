@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "medicSearch",
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "AmericaSao_Paulo"
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
@@ -91,4 +92,3 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-
