@@ -1,6 +1,7 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from medicSearch.models import Profile
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def list_medics_view(request):
@@ -15,7 +16,8 @@ def list_medics_view(request):
 
     if name is not None and name != "":
         medics = medics.filter(
-            Q(user__first_name__contains=name) | Q(user__username__contains=name)
+            Q(user__first_name__contains=name) | Q(
+                user__username__contains=name)
         )
 
     if speciality is not None:
@@ -30,6 +32,17 @@ def list_medics_view(request):
         elif state is not None:
             medics = medics.filter(addresses__neighborhood__city__state=state)
 
-    print(medics.all())
+    if len(medics) > 0:
+        paginator = Paginator(medics, 8)
+        page = request.GET.get('page')
+        medics = paginator.get_page(page)
+        get_copy = request.GET.copy()
+        parameters = get_copy.pop('page', True) and get_copy.urlencode()
 
-    return HttpResponse("Listagem de 1 ou mais médicos")
+    context = {
+        "medics": medics,
+        "parameters": parameters,
+    }
+
+    return render(request, template_name='medic/medics.html',
+                  context=context, status=200)
